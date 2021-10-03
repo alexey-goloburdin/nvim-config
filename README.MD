@@ -1,4 +1,14 @@
+# Nvim as Python / Rust / any another language IDE!
+
 Video (in Russian) — https://www.youtube.com/watch?v=PA7zZNJXJEk
+
+For Mac OS:
+
+```sh
+brew install nvim
+brew install rust_analyzer
+npm install -g pyright
+```
 
 `~/.config/nvim/vim.init` file:
 
