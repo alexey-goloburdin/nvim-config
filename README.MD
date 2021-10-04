@@ -264,4 +264,8 @@ map gp :bp<cr>
 map gw :Bclose<cr>
 
 set colorcolumn=79
+
+" run current script with python3 by CTRL+R in command and insert mode
+autocmd FileType python map <buffer> <C-r> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <C-r> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
 ```
