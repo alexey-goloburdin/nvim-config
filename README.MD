@@ -6,7 +6,7 @@ For Mac OS:
 
 ```sh
 brew install nvim
-brew install rust_analyzer
+brew install rust-analyzer
 npm install -g pyright
 ```
 
