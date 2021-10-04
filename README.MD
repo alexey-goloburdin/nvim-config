@@ -10,7 +10,7 @@ brew install rust-analyzer
 npm install -g pyright
 ```
 
-`~/.config/nvim/vim.init` file:
+`~/.config/nvim/init.vim` file:
 
 ```
 set mouse=a  " enable mouse
