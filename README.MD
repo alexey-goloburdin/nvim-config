@@ -12,6 +12,10 @@ npm install -g pyright
 
 `~/.config/nvim/init.vim` file:
 
+Install Vim-Plug
+```sh
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 ```
 set mouse=a  " enable mouse
 set encoding=utf-8
