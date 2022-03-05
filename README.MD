@@ -278,4 +278,4 @@ autocmd FileType python imap <buffer> <C-r> <esc>:w<CR>:exec '!python3' shellesc
 
 Run nvim and execute command:
 
-`:PlugInstall
+`:PlugInstall`
