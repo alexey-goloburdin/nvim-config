@@ -27,6 +27,12 @@ set autoindent
 set fileformat=unix
 filetype indent on      " load filetype-specific indent files
 
+" for tabulation
+set smartindent
+set tabstop=2
+set expandtab
+set shiftwidth=2
+
 inoremap jk <esc>
 
 
@@ -38,22 +44,37 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
 
-
 " color schemas
 Plug 'morhetz/gruvbox'  " colorscheme gruvbox
 Plug 'mhartington/oceanic-next'  " colorscheme OceanicNext
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'ayu-theme/ayu-vim'
 
-" For JS/JSX
-Plug 'yuezk/vim-js'
+Plug 'xiyaowong/nvim-transparent'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'Pocco81/AutoSave.nvim'
+Plug 'justinmk/vim-sneak'
+
+" JS/JSX/TS
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'maxmellon/vim-jsx-pretty'
+" TS from here https://jose-elias-alvarez.medium.com/configuring-neovims-lsp-client-for-typescript-development-5789d58ea9c
+Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
+Plug 'nvim-lua/plenary.nvim'
+
 
 call plug#end()
 
+let g:sneak#label = 1
 
 colorscheme gruvbox
-" colorscheme OceanicNext
+"colorscheme OceanicNext
 "let g:material_terminal_italics = 1
 " variants: default, palenight, ocean, lighter, darker, default-community,
 "           palenight-community, ocean-community, lighter-community,
@@ -81,6 +102,7 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- luasnip setup
 local luasnip = require 'luasnip'
+local async = require "plenary.async"
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
@@ -167,8 +189,39 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-
 end
+
+
+-- TS setup!!!!
+local buf_map = function(bufnr, mode, lhs, rhs, opts)
+    vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts or {
+        silent = true,
+    })
+end
+
+nvim_lsp.tsserver.setup({
+    on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+        local ts_utils = require("nvim-lsp-ts-utils")
+        ts_utils.setup({})
+        ts_utils.setup_client(client)
+        buf_map(bufnr, "n", "gs", ":TSLspOrganize<CR>")
+        buf_map(bufnr, "n", "gi", ":TSLspRenameFile<CR>")
+        buf_map(bufnr, "n", "go", ":TSLspImportAll<CR>")
+        on_attach(client, bufnr)
+    end,
+})
+
+local null_ls = require("null-ls")
+null_ls.setup({
+    sources = {
+        null_ls.builtins.diagnostics.eslint_d,
+        null_ls.builtins.code_actions.eslint_d,
+        null_ls.builtins.formatting.prettier
+    },
+    on_attach = on_attach
+})
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
@@ -263,9 +316,58 @@ map gn :bn<cr>
 map gp :bp<cr>
 map gw :Bclose<cr>
 
-set colorcolumn=79
+autocmd FileType python map <buffer> <C-h> :w<CR>:exec '!python3.10' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <C-h> <esc>:w<CR>:exec '!python3.10' shellescape(@%, 1)<CR>
 
-" run current script with python3 by CTRL+R in command and insert mode
-autocmd FileType python map <buffer> <C-r> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
-autocmd FileType python imap <buffer> <C-r> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType c map <buffer> <C-h> :w<CR>:exec '!gcc' shellescape(@%, 1) '-o out; ./out'<CR>
+autocmd FileType c imap <buffer> <C-h> <esc>:w<CR>:exec '!gcc' shellescape(@%, 1) '-o out; ./out'<CR>
+
+
+
+autocmd FileType python set colorcolumn=79
+
+set relativenumber
+set rnu
+
+let g:transparent_enabled = v:true
+
+tnoremap <Esc> <C-\><C-n>
+
+nnoremap F :GFiles<CR>
+
+nnoremap H gT
+nnoremap L gt
+
+" Autosave plugin
+
+lua << EOF
+local autosave = require("autosave")
+
+autosave.setup(
+    {
+        enabled = true,
+        execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
+        events = {"InsertLeave", "TextChanged"},
+        conditions = {
+            exists = true,
+            filename_is_not = {},
+            filetype_is_not = {},
+            modifiable = true
+        },
+        write_all_buffers = false,
+        on_off_commands = true,
+        clean_command_line_interval = 0,
+        debounce_delay = 135
+    }
+)
+EOF
+
+command CreateComponent :terminal '/Users/alexeygoloburdin/code/lms/frontend/createcomponent.py'
+
+set termguicolors
+
+hi DiagnosticError guifg=White
+hi DiagnosticWarn  guifg=White
+hi DiagnosticInfo  guifg=White
+hi DiagnosticHint  guifg=White
 ```
