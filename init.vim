@@ -58,6 +58,7 @@ Plug 'prettier/vim-prettier', {
 
 Plug 'bmatcuk/stylelint-lsp'
 
+" Convenient floating terminal window
 "Plug 'voldikss/vim-floaterm'
 
 call plug#end()
@@ -216,8 +217,8 @@ null_ls.setup({
 require'lspconfig'.stylelint_lsp.setup{
   settings = {
     stylelintplus = {
-      autoFixOnSave = true,
-      autoFixOnFormat = true,
+      --autoFixOnSave = true,
+      --autoFixOnFormat = true,
     }
   }
 }
