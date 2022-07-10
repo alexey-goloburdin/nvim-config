@@ -55,6 +55,9 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install --frozen-lockfile --production',
   \ 'for': ['javascript', 'typescript', 'typescriptreact', 'javascriptreact', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+
+Plug 'bmatcuk/stylelint-lsp'
+
 "Plug 'voldikss/vim-floaterm'
 
 call plug#end()
@@ -208,6 +211,17 @@ null_ls.setup({
     },
     on_attach = on_attach
 })
+
+-- Stylelint format after save
+require'lspconfig'.stylelint_lsp.setup{
+  settings = {
+    stylelintplus = {
+      autoFixOnSave = true,
+      autoFixOnFormat = true,
+    }
+  }
+}
+
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
