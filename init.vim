@@ -55,12 +55,22 @@ Plug 'prettier/vim-prettier', {
 
 Plug 'bmatcuk/stylelint-lsp'
 
+Plug 'preservim/nerdtree'
+
+
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 " Convenient floating terminal window
 "Plug 'voldikss/vim-floaterm'
 
 call plug#end()
+
+" NERDTree bindings
+nnoremap <C-t> :NERDTreeToggle<CR>
+
+" Leader bind to space
+let mapleader = ","
 
 " Automatically format frontend files with prettier after file save
 let g:prettier#autoformat = 1
@@ -331,8 +341,8 @@ let g:transparent_enabled = v:true
 tnoremap <Esc> <C-\><C-n>
 
 " Telescope bindings
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap ,ff <cmd>Telescope find_files<cr>
+nnoremap ,fg <cmd>Telescope live_grep<cr>
 
 " Go to next or prev tab by H and L accordingly
 nnoremap H gT
@@ -360,6 +370,11 @@ autosave.setup(
         debounce_delay = 135
     }
 )
+EOF
+
+" Telescope fzf plugin
+lua << EOF
+require('telescope').load_extension('fzf')
 EOF
 
 " Fast component creating for React app
