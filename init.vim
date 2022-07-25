@@ -55,9 +55,6 @@ Plug 'prettier/vim-prettier', {
 
 Plug 'bmatcuk/stylelint-lsp'
 
-Plug 'preservim/nerdtree'
-
-
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
@@ -66,11 +63,14 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 call plug#end()
 
-" NERDTree bindings
-nnoremap <C-t> :NERDTreeToggle<CR>
-
 " Leader bind to space
 let mapleader = ","
+
+" Netrw file explorer settings
+let g:netrw_banner = 0 " hide banner above files
+let g:netrw_liststyle = 3 " tree instead of plain view
+let g:netrw_browse_split = 2 " vertical split window when Enter pressed on file
+let g:netrw_winsize = 75 " set default explorer window width
 
 " Automatically format frontend files with prettier after file save
 let g:prettier#autoformat = 1
