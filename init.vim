@@ -36,9 +36,6 @@ Plug 'ayu-theme/ayu-vim'
 
 Plug 'xiyaowong/nvim-transparent'
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
 Plug 'Pocco81/AutoSave.nvim'
 Plug 'justinmk/vim-sneak'
 
@@ -57,6 +54,8 @@ Plug 'prettier/vim-prettier', {
   \ 'for': ['javascript', 'typescript', 'typescriptreact', 'javascriptreact', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 
 Plug 'bmatcuk/stylelint-lsp'
+
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 
 " Convenient floating terminal window
 "Plug 'voldikss/vim-floaterm'
@@ -331,8 +330,9 @@ let g:transparent_enabled = v:true
 
 tnoremap <Esc> <C-\><C-n>
 
-" Fuzzy search files with fzf
-nnoremap F :GFiles<CR>
+" Telescope bindings
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 
 " Go to next or prev tab by H and L accordingly
 nnoremap H gT
