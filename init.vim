@@ -69,8 +69,7 @@ let mapleader = ","
 " Netrw file explorer settings
 let g:netrw_banner = 0 " hide banner above files
 let g:netrw_liststyle = 3 " tree instead of plain view
-let g:netrw_browse_split = 2 " vertical split window when Enter pressed on file
-let g:netrw_winsize = 75 " set default explorer window width
+let g:netrw_browse_split = 3 " vertical split window when Enter pressed on file
 
 " Automatically format frontend files with prettier after file save
 let g:prettier#autoformat = 1
@@ -341,8 +340,8 @@ let g:transparent_enabled = v:true
 tnoremap <Esc> <C-\><C-n>
 
 " Telescope bindings
-nnoremap ,ff <cmd>Telescope find_files<cr>
-nnoremap ,fg <cmd>Telescope live_grep<cr>
+nnoremap ,f <cmd>Telescope find_files<cr>
+nnoremap ,g <cmd>Telescope live_grep<cr>
 
 " Go to next or prev tab by H and L accordingly
 nnoremap H gT
