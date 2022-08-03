@@ -350,7 +350,7 @@ nnoremap L gt
 " Autosave plugin
 
 lua << EOF
-local autosave = require("autosave")
+local autosave = require("auto-save")
 
 autosave.setup(
     {
