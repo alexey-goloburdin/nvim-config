@@ -36,7 +36,7 @@ Plug 'ayu-theme/ayu-vim'
 
 Plug 'xiyaowong/nvim-transparent'
 
-Plug 'Pocco81/AutoSave.nvim'
+Plug 'Pocco81/auto-save.nvim'
 Plug 'justinmk/vim-sneak'
 
 " JS/JSX/TS
@@ -348,14 +348,16 @@ nnoremap H gT
 nnoremap L gt
 
 " Autosave plugin
-
 lua << EOF
-local autosave = require("autosave")
-
-autosave.setup(
-    {
+require("auto-save").setup({
         enabled = true,
-        execution_message = "AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"),
+            execution_message = {
+		    message = function() -- message to print on save
+			        return ("AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"))
+		        end,
+		        dim = 0.18, -- dim the color of `message`
+		        cleaning_interval = 1250, -- (milliseconds) automatically clean MsgArea after displaying `message`. See :h MsgArea
+	      },
         events = {"InsertLeave", "TextChanged"},
         conditions = {
             exists = true,
@@ -366,9 +368,8 @@ autosave.setup(
         write_all_buffers = false,
         on_off_commands = true,
         clean_command_line_interval = 0,
-        debounce_delay = 135
-    }
-)
+        debounce_delay = 135,
+})
 EOF
 
 " Telescope fzf plugin
