@@ -98,7 +98,7 @@ endif
 "colorscheme ayu
 
 " turn off search highlight
-nnoremap ,<space> :nohlsearch<CR>
+nnoremap <Leader><space> :nohlsearch<CR>
 
 lua << EOF
 -- Set completeopt to have a better completion experience
@@ -340,8 +340,8 @@ let g:transparent_enabled = v:true
 tnoremap <Esc> <C-\><C-n>
 
 " Telescope bindings
-nnoremap ,f <cmd>Telescope find_files<cr>
-nnoremap ,g <cmd>Telescope live_grep<cr>
+nnoremap <Leader>f <cmd>Telescope find_files<cr>
+nnoremap <Leader>g <cmd>Telescope live_grep<cr>
 
 " Go to next or prev tab by H and L accordingly
 nnoremap H gT
