@@ -63,7 +63,7 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 call plug#end()
 
-" Leader bind to space
+" Leader bind to ,
 let mapleader = ","
 
 " Netrw file explorer settings
