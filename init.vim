@@ -61,6 +61,8 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 " Convenient floating terminal window
 "Plug 'voldikss/vim-floaterm'
 
+Plug 'ray-x/lsp_signature.nvim'
+
 call plug#end()
 
 " Leader bind to space
@@ -183,11 +185,20 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+  require "lsp_signature".on_attach({
+      bind = true, -- This is mandatory, otherwise border config won't get registered.
+      floating_window = true,
+      floating_window_above_cur_line = true,
+      floating_window_off_x = 20,
+      doc_lines = 10,
+      hint_prefix = '👻 '
+    }, bufnr)  -- Note: add in lsp client on-attach
 end
 
 -- TS setup
@@ -199,8 +210,8 @@ end
 
 nvim_lsp.tsserver.setup({
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.document_range_formatting = false
         local ts_utils = require("nvim-lsp-ts-utils")
         ts_utils.setup({})
         ts_utils.setup_client(client)
@@ -324,11 +335,14 @@ map gp :bp<cr>
 map gw :Bclose<cr>
 
 " Run Python and C files by Ctrl+h
-autocmd FileType python map <buffer> <C-h> :w<CR>:exec '!python3.10' shellescape(@%, 1)<CR>
-autocmd FileType python imap <buffer> <C-h> <esc>:w<CR>:exec '!python3.10' shellescape(@%, 1)<CR>
+autocmd FileType python map <buffer> <C-h> :w<CR>:exec '!python3.11' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <C-h> <esc>:w<CR>:exec '!python3.11' shellescape(@%, 1)<CR>
 
 autocmd FileType c map <buffer> <C-h> :w<CR>:exec '!gcc' shellescape(@%, 1) '-o out; ./out'<CR>
 autocmd FileType c imap <buffer> <C-h> <esc>:w<CR>:exec '!gcc' shellescape(@%, 1) '-o out; ./out'<CR>
+
+autocmd FileType sh map <buffer> <C-h> :w<CR>:exec '!bash' shellescape(@%, 1)<CR>
+autocmd FileType sh imap <buffer> <C-h> <esc>:w<CR>:exec '!bash' shellescape(@%, 1)<CR>
 
 autocmd FileType python set colorcolumn=79
 
@@ -348,28 +362,12 @@ nnoremap H gT
 nnoremap L gt
 
 " Autosave plugin
+
 lua << EOF
-require("auto-save").setup({
-        enabled = true,
-            execution_message = {
-		    message = function() -- message to print on save
-			        return ("AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"))
-		        end,
-		        dim = 0.18, -- dim the color of `message`
-		        cleaning_interval = 1250, -- (milliseconds) automatically clean MsgArea after displaying `message`. See :h MsgArea
-	      },
-        events = {"InsertLeave", "TextChanged"},
-        conditions = {
-            exists = true,
-            filename_is_not = {},
-            filetype_is_not = {},
-            modifiable = true
-        },
-        write_all_buffers = false,
-        on_off_commands = true,
-        clean_command_line_interval = 0,
-        debounce_delay = 135,
-})
+require("auto-save").setup(
+    {
+    }
+)
 EOF
 
 " Telescope fzf plugin
