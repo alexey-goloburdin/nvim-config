@@ -55,6 +55,8 @@ Plug 'prettier/vim-prettier', {
 
 Plug 'bmatcuk/stylelint-lsp'
 
+Plug 'nvim-lua/plenary.nvim'
+
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
@@ -379,7 +381,6 @@ EOF
 command CreateComponent :terminal '/Users/alexeygoloburdin/code/lms/frontend/createcomponent.py'
 
 " White colors for LSP messages in code
-set termguicolors
 hi DiagnosticError guifg=White
 hi DiagnosticWarn  guifg=White
 hi DiagnosticInfo  guifg=White
