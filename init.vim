@@ -1,6 +1,7 @@
 set mouse=a  " enable mouse
 set encoding=utf-8
 set number
+set cursorline
 set noswapfile
 set scrolloff=7
 
@@ -17,6 +18,10 @@ set smartindent
 set tabstop=2
 set expandtab
 set shiftwidth=2
+
+" horizontal split open below and right
+set splitbelow
+set splitright
 
 inoremap jk <esc>
 
@@ -55,13 +60,15 @@ Plug 'prettier/vim-prettier', {
 
 Plug 'bmatcuk/stylelint-lsp'
 
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 " Convenient floating terminal window
 "Plug 'voldikss/vim-floaterm'
 
 Plug 'ray-x/lsp_signature.nvim'
+
+Plug 'lspcontainers/lspcontainers.nvim'
 
 call plug#end()
 
@@ -314,7 +321,7 @@ function! s:Bclose(bang, buffer)
       " Numbers of listed buffers which are not the target to be deleted.
       let blisted = filter(range(1, bufnr('$')), 'buflisted(v:val) && v:val != btarget')
       " Listed, not target, and not displayed.
-      let bhidden = filter(copy(blisted), 'bufwinnr(v:val) < 0')
+      let bhidden = filter(eopy(blisted), 'bufwinnr(v:val) < 0')
       " Take the first buffer, if any (could be more intelligent).
       let bjump = (bhidden + blisted + [-1])[0]
       if bjump > 0
@@ -341,13 +348,16 @@ autocmd FileType python imap <buffer> <C-h> <esc>:w<CR>:exec '!python3.11' shell
 autocmd FileType c map <buffer> <C-h> :w<CR>:exec '!gcc' shellescape(@%, 1) '-o out; ./out'<CR>
 autocmd FileType c imap <buffer> <C-h> <esc>:w<CR>:exec '!gcc' shellescape(@%, 1) '-o out; ./out'<CR>
 
+autocmd FileType go map <buffer> <C-h> :w<CR>:exec '!go run' shellescape(@%, 1)<CR>
+autocmd FileType go imap <buffer> <C-h> <esc>:w<CR>:exec '!go run' shellescape(@%, 1)<CR>
+
 autocmd FileType sh map <buffer> <C-h> :w<CR>:exec '!bash' shellescape(@%, 1)<CR>
 autocmd FileType sh imap <buffer> <C-h> <esc>:w<CR>:exec '!bash' shellescape(@%, 1)<CR>
 
-autocmd FileType python set colorcolumn=79
+autocmd FileType python set colorcolumn=88
 
-set relativenumber
-set rnu
+" set relativenumber
+" set rnu
 
 let g:transparent_enabled = v:true
 
@@ -384,3 +394,4 @@ hi DiagnosticError guifg=White
 hi DiagnosticWarn  guifg=White
 hi DiagnosticInfo  guifg=White
 hi DiagnosticHint  guifg=White
+
