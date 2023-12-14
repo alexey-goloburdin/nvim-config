@@ -72,7 +72,7 @@ Plug 'lspcontainers/lspcontainers.nvim'
 
 call plug#end()
 
-" Leader bind to space
+" Leader bind to ,
 let mapleader = ","
 
 " Netrw file explorer settings
