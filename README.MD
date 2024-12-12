@@ -1,3 +1,7 @@
+# This repository has been moved
+
+This repository is out of date. Please move to [new repository](https://github.com/alexey-goloburdin/dotfiles).
+
 # Nvim as Python / Rust / any another language IDE!
 
 Video (in Russian) — https://www.youtube.com/watch?v=PA7zZNJXJEk
